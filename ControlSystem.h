@@ -11,6 +11,7 @@ public:
 	void addEntity(Entity* e) { entities.push_back(e); }
 	void update(SDL_Event& event)
 	{
+		move(event);
 		for (Entity* e : entities)
 		{
 			vector<Component*> components = e->getComponents();
@@ -27,7 +28,6 @@ public:
 					{
 					case STATE::UP:
 						yVelocity = positionComponent->getYPosition() + -(controlComponent->getVelocity());
-						positionComponent->setYPosition(yVelocity);
 						break;
 					case STATE::DOWN:
 						yVelocity = positionComponent->getYPosition() + controlComponent->getVelocity();
@@ -44,7 +44,6 @@ public:
 				}
 			}
 		}
-		move(event);
 	}
 	void move(SDL_Event &event)
 	{

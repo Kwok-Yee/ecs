@@ -1,14 +1,9 @@
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
 #include <iostream>
-#include "Command.h"
-#include "InputHandler.h"
-#include "Player.h"
-#include "JumpCommand.h"
-#include "FireCommand.h"
-#include "CrouchCommand.h"
-#include "ShieldCommand.h"
-#include "MeleeCommand.h"
+#include "Entity.h"
+#include "HealthComponent.h"
+#include "HealthSystem.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 800;
@@ -75,6 +70,29 @@ void close()
 
 int main()
 {
+	Entity player = Entity("Player");
+	Entity alien = Entity("Alien");
+	Entity dog = Entity("Dog");
+	Entity cat = Entity("Cat");
+
+	HealthComponent healthComponent;
+	player.addComponent(healthComponent);
+	alien.addComponent(healthComponent);
+	dog.addComponent(healthComponent);
+	cat.addComponent(healthComponent);
+
+	HealthSystem healthSystem;
+	healthSystem.addEntity(player);
+	healthSystem.addEntity(alien);
+	healthSystem.addEntity(dog);
+	healthSystem.addEntity(cat);
+
+	while (true)
+	{
+		healthSystem.update();
+	}
+
+
 	if (!init())
 	{
 		printf("Failed to initialize!\n");
@@ -82,23 +100,6 @@ int main()
 	else
 	{
 		SDL_SetMainReady();
-
-		InputHandler inputHandler;
-		Player* john = new Player("John");
-		Player* david = new Player("David");
-		Player* sam = new Player("Sam");
-		Player* mitch = new Player("Mitch");
-		Player* ryan = new Player("Ryan");
-		Command* jump = new JumpCommand(john);
-		Command* fire = new FireCommand(david);
-		Command* crouch = new CrouchCommand(sam);
-		Command* shield = new ShieldCommand(mitch);
-		Command* melee = new MeleeCommand(ryan);
-		inputHandler.bindKeysToCommands(1, jump); // 1 for jump
-		inputHandler.bindKeysToCommands(2, fire); // 2 for fire
-		inputHandler.bindKeysToCommands(3, crouch); // 3 for crouch
-		inputHandler.bindKeysToCommands(4, shield); // 4 for shield
-		inputHandler.bindKeysToCommands(5, melee); // 5 for melee
 
 		bool quit = false;
 
@@ -114,9 +115,10 @@ int main()
 				}
 				else if (event.type == SDL_KEYDOWN)
 				{
-					inputHandler.handleInput(event);
 
 				}
+
+				
 
 				//Apply the image
 				SDL_BlitSurface(gXOut, NULL, gScreenSurface, NULL);

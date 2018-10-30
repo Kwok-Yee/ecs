@@ -121,18 +121,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Command.h" />
-    <ClInclude Include="CrouchCommand.h" />
-    <ClInclude Include="FireCommand.h" />
-    <ClInclude Include="InputHandler.h" />
-    <ClInclude Include="JumpCommand.h" />
-    <ClInclude Include="MeleeCommand.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="ShieldCommand.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HealthSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

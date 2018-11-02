@@ -1,9 +1,17 @@
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
 #include <iostream>
+#include <vector>
 #include "Entity.h"
 #include "HealthComponent.h"
+#include "PositionComponent.h"
+#include "ControlComponent.h"
 #include "HealthSystem.h"
+#include "ControlSystem.h"
+#include "RenderSystem.h"
+#include "AISystem.h"
+
+using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 800;
@@ -81,17 +89,46 @@ int main()
 	dog.addComponent(healthComponent);
 	cat.addComponent(healthComponent);
 
+	PositionComponent positionComponent;
+	player.addComponent(positionComponent);
+	alien.addComponent(positionComponent);
+	dog.addComponent(positionComponent);
+	cat.addComponent(positionComponent);
+
+	ControlComponent controlComponent;
+	player.addComponent(controlComponent);
+
 	HealthSystem healthSystem;
 	healthSystem.addEntity(player);
 	healthSystem.addEntity(alien);
 	healthSystem.addEntity(dog);
 	healthSystem.addEntity(cat);
 
+	ControlSystem controlSystem;
+	controlSystem.addEntity(player);
+	controlSystem.addEntity(alien);
+	controlSystem.addEntity(dog);
+	controlSystem.addEntity(cat);
+
+	RenderSystem renderSystem;
+	renderSystem.addEntity(player);
+	renderSystem.addEntity(alien);
+	renderSystem.addEntity(dog);
+	renderSystem.addEntity(cat);
+
+	AISystem aiSystem;
+	aiSystem.addEntity(alien);
+	aiSystem.addEntity(dog);
+	aiSystem.addEntity(cat);
+
 	while (true)
 	{
-		healthSystem.update();
-	}
+		//healthSystem.update();
+		//controlSystem.update();
+		//renderSystem.update();
+		aiSystem.update();
 
+	}
 
 	if (!init())
 	{
@@ -117,9 +154,7 @@ int main()
 				{
 
 				}
-
 				
-
 				//Apply the image
 				SDL_BlitSurface(gXOut, NULL, gScreenSurface, NULL);
 				//Update the surface

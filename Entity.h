@@ -7,7 +7,6 @@ using namespace std;
 
 class Entity
 {
-	int id;
 public:
 	Entity(string n) { name = n; };
 	void addComponent(Component c) { components.push_back(c); };

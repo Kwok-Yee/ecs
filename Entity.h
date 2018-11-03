@@ -9,11 +9,11 @@ class Entity
 {
 public:
 	Entity(string n) { name = n; };
-	void addComponent(Component c) { components.push_back(c); };
-	void removeComponent(Component c) { };
-	vector<Component> getComponents() { return components; };
+	void addComponent(Component* c) { components.push_back(c); };
+	void removeComponent(Component* c) { };
+	vector<Component*> getComponents() { return components; };
 	string getName() { return name; };
 private:
-	vector<Component> components;
+	vector<Component*> components;
 	string name;
 };

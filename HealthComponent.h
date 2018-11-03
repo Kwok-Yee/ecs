@@ -4,9 +4,11 @@
 class HealthComponent : public Component
 {
 public:
-	HealthComponent() : health(100) {}
+	HealthComponent(int h) { health = h; }
 	int getHealth() { return health; }
 	void SetHealth(int h) { health = h; }
+	TYPE getType() { return type; }
 private:
+	TYPE type = TYPE::HEALTH;
 	int health;
 };

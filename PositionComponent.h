@@ -4,12 +4,14 @@
 class PositionComponent : public Component
 {
 public:
-	PositionComponent() {}
-	float getXPosition() { return x; }
-	float getYPosition() { return y; }
+	PositionComponent(int a, int b) { x = a; y = b; }
+	int getXPosition() { return x; }
+	int getYPosition() { return y; }
 	void setXPosition(float a) { x = a; }
 	void setYPosition(float b) { y = b; }
+	TYPE getType() { return type; }
 private:
-	float x;
-	float y;
+	TYPE type = TYPE::POSITION;
+	int x;
+	int y;
 };

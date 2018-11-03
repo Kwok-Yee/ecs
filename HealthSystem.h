@@ -24,6 +24,7 @@ public:
 				}
 			}
 		}
+		cout << endl;
 	}
 private:
 	vector<Entity*> entities;

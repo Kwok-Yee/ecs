@@ -6,6 +6,7 @@
 #include "HealthComponent.h"
 #include "PositionComponent.h"
 #include "ControlComponent.h"
+#include "AIComponent.h"
 #include "HealthSystem.h"
 #include "ControlSystem.h"
 #include "RenderSystem.h"
@@ -84,47 +85,49 @@ int main()
 	Entity* cat = new Entity("Cat");
 
 	player->addComponent(new HealthComponent(200));
+	player->addComponent(new PositionComponent(10, 15));
+	player->addComponent(new ControlComponent());
 
-	//alien.addComponent(healthComponent);
-	//dog.addComponent(healthComponent);
-	//cat.addComponent(healthComponent);
+	alien->addComponent(new HealthComponent(150));
+	alien->addComponent(new PositionComponent(20, 30));
+	alien->addComponent(new AIComponent());
 
-	//PositionComponent positionComponent;
-	//player.addComponent(positionComponent);
-	//alien.addComponent(positionComponent);
-	//dog.addComponent(positionComponent);
-	//cat.addComponent(positionComponent);
+	dog->addComponent(new HealthComponent(100));
+	dog->addComponent(new PositionComponent(50, 80));
+	dog->addComponent(new AIComponent());
 
-	//ControlComponent controlComponent;
-	//player.addComponent(controlComponent);
+	cat->addComponent(new HealthComponent(75));
+	cat->addComponent(new PositionComponent(70, 30));
+	cat->addComponent(new AIComponent());
 
 	HealthSystem healthSystem;
 	healthSystem.addEntity(player);
-	//healthSystem.addEntity(alien);
-	//healthSystem.addEntity(dog);
-	//healthSystem.addEntity(cat);
+	healthSystem.addEntity(alien);
+	healthSystem.addEntity(dog);
+	healthSystem.addEntity(cat);
 
-	//ControlSystem controlSystem;
-	//controlSystem.addEntity(player);
-	//controlSystem.addEntity(alien);
-	//controlSystem.addEntity(dog);
-	//controlSystem.addEntity(cat);
+	ControlSystem controlSystem;
+	controlSystem.addEntity(player);
 
-	//RenderSystem renderSystem;
-	//renderSystem.addEntity(player);
-	//renderSystem.addEntity(alien);
-	//renderSystem.addEntity(dog);
-	//renderSystem.addEntity(cat);
+	RenderSystem renderSystem;
+	renderSystem.addEntity(player);
+	renderSystem.addEntity(alien);
+	renderSystem.addEntity(dog);
+	renderSystem.addEntity(cat);
 
-	//AISystem aiSystem;
-	//aiSystem.addEntity(alien);
-	//aiSystem.addEntity(dog);
-	//aiSystem.addEntity(cat);
+	AISystem aiSystem;
+	aiSystem.addEntity(alien);
+	aiSystem.addEntity(dog);
+	aiSystem.addEntity(cat);
 
+	healthSystem.update();
+	controlSystem.update();
+	renderSystem.update();
+	aiSystem.update();
 
 	while (true)
 	{
-		healthSystem.update();
+		//healthSystem.update();
 		//controlSystem.update();
 		//renderSystem.update();
 		//aiSystem.update();

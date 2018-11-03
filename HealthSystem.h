@@ -19,7 +19,7 @@ public:
 			{
 				if (c->getType() == TYPE::HEALTH)
 				{
-					HealthComponent* healthComponent = dynamic_cast<HealthComponent*>(c);
+					HealthComponent* healthComponent = static_cast<HealthComponent*>(c);
 					cout << "Entity: " << e->getName() << ", Health: " << healthComponent->getHealth() << endl;
 				}
 			}

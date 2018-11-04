@@ -35,7 +35,7 @@ int main()
 
 	alien->addComponent(new HealthComponent(150));
 	alien->addComponent(new PositionComponent(10, 180));
-	alien->addComponent(new AIComponent(4));
+	alien->addComponent(new AIComponent(2));
 	alien->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("alien.png"))));
 
 	dog->addComponent(new HealthComponent(100));
@@ -45,7 +45,7 @@ int main()
 
 	cat->addComponent(new HealthComponent(75));
 	cat->addComponent(new PositionComponent(10, 470));
-	cat->addComponent(new AIComponent(2));
+	cat->addComponent(new AIComponent(1));
 	cat->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("cat.png"))));
 
 	HealthSystem healthSystem;

@@ -19,12 +19,28 @@ public:
 				if (c->getType() == TYPE::AI)
 				{
 					AIComponent* aiComponent = static_cast<AIComponent*>(c);
-					cout << "AISystem, Entity: " << e->getName() << ", is AI: " << aiComponent->getIsAI() << endl;
+					//cout << "AISystem, Entity: " << e->getName() << ", velocity: " << aiComponent->getVelocity() << endl;
+					velocity = aiComponent->getVelocity();
+				}
+				if (c->getType() == TYPE::POSITION)
+				{
+					PositionComponent* positionComponent = static_cast<PositionComponent*>(c);
+					//cout << e->getName() << " velocity: " << velocity << endl;
+					if (positionComponent->getXPosition() > 0 && positionComponent->getXPosition() < SCREEN_WIDTH)
+					{
+						velocity += positionComponent->getXPosition();
+					}
+					else if (positionComponent->getXPosition() < 0 && positionComponent->getXPosition() > SCREEN_WIDTH)
+					{
+						velocity -= positionComponent->getXPosition();
+					}
+					cout << velocity << endl;
+					positionComponent->setXPosition(velocity);
 				}
 			}
 		}
-		cout << endl;
 	}
 private:
 	vector<Entity*> entities;
+	int velocity = 0;
 };

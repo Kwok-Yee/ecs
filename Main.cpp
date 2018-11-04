@@ -30,7 +30,7 @@ int main()
 
 	player->addComponent(new HealthComponent(200));
 	player->addComponent(new PositionComponent(10, 30));
-	player->addComponent(new ControlComponent());
+	player->addComponent(new ControlComponent(5));
 	player->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("player.png"))));
 
 	alien->addComponent(new HealthComponent(150));
@@ -57,7 +57,6 @@ int main()
 	ControlSystem controlSystem;
 	controlSystem.addEntity(player);
 
-	//RenderSystem renderSystem;
 	renderSystem.addEntity(player);
 	renderSystem.addEntity(alien);
 	renderSystem.addEntity(dog);
@@ -68,8 +67,6 @@ int main()
 	aiSystem.addEntity(dog);
 	aiSystem.addEntity(cat);
 
-	controlSystem.update();
-
 	while (!renderSystem.getisQuit())
 	{
 		while (SDL_PollEvent(&event) != 0)
@@ -78,6 +75,10 @@ int main()
 			{
 				renderSystem.setIsQuit(true);
 				renderSystem.quit();
+			}
+			else if (event.type == SDL_KEYDOWN)
+			{
+				controlSystem.update(event);
 			}
 		}
 		healthSystem.update();

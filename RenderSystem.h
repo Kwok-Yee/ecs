@@ -31,7 +31,7 @@ public:
 		IMG_Init(IMG_INIT_PNG);
 
 		window = SDL_CreateWindow("Entity Component System", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		renderer = SDL_CreateRenderer(window, -1, 0);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
 		// Set background color
 		SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
@@ -61,7 +61,7 @@ public:
 				{
 					positionComponent = static_cast<PositionComponent*>(c);
 					srcRect = { 0, 0, 32, 32 };
-					dstRect = { positionComponent->getXPosition() , positionComponent->getYPosition(), 64, 64 };
+					dstRect = { positionComponent->getXPosition(), positionComponent->getYPosition(), 64, 64 };
 				}
 				if (c->getType() == TYPE::RENDER)
 				{

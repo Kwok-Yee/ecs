@@ -28,10 +28,6 @@ public:
 					{
 						velocity += positionComponent->getXPosition();
 					}
-					else if (positionComponent->getXPosition() < 0 && positionComponent->getXPosition() > SCREEN_WIDTH)
-					{
-						velocity -= positionComponent->getXPosition();
-					}
 					positionComponent->setXPosition(velocity);
 				}
 			}

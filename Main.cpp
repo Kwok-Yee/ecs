@@ -1,5 +1,6 @@
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
+#include "SDL_image.h"
 #include <iostream>
 #include <vector>
 #include "Entity.h"
@@ -7,6 +8,7 @@
 #include "PositionComponent.h"
 #include "ControlComponent.h"
 #include "AIComponent.h"
+#include "RenderComponent.h"
 #include "HealthSystem.h"
 #include "ControlSystem.h"
 #include "RenderSystem.h"
@@ -14,91 +16,57 @@
 
 using namespace std;
 
-//Screen dimension constants
+// Screen dimension constants
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
-//Starts up SDL and creates window
-bool init();
+// The window we'll be rendering to
+SDL_Window* window = NULL;
 
-//Frees media and shuts down SDL
-void close();
+// The surface image
+SDL_Surface* image = NULL;
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+// The renderer
+SDL_Renderer * renderer = NULL;
 
-//The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
-
-//The image we will load and show on the screen
-SDL_Surface* gXOut = NULL;
-
-bool init()
-{
-	//Initialization flag
-	bool success = true;
-
-	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-		success = false;
-	}
-	else
-	{
-		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (gWindow == NULL)
-		{
-			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			success = false;
-		}
-		else
-		{
-			//Get window surface
-			gScreenSurface = SDL_GetWindowSurface(gWindow);
-		}
-	}
-
-	return success;
-}
-
-void close()
-{
-	//Deallocate surface
-	SDL_FreeSurface(gXOut);
-	gXOut = NULL;
-
-	//Destroy window
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-
-	//Quit SDL subsystems
-	SDL_Quit();
-}
+// The texture that will be created
+SDL_Texture* texture = NULL;
 
 int main()
 {
+	SDL_Init(SDL_INIT_VIDEO);
+	IMG_Init(IMG_INIT_PNG);
+
+	window = SDL_CreateWindow("Entity Component System", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	renderer = SDL_CreateRenderer(window, -1, 0);
+
+	SDL_Event event;
+	bool quit = false;
+
 	Entity* player = new Entity("Player");
 	Entity* alien = new Entity("Alien");
 	Entity* dog = new Entity("Dog");
 	Entity* cat = new Entity("Cat");
 
 	player->addComponent(new HealthComponent(200));
-	player->addComponent(new PositionComponent(10, 15));
+	player->addComponent(new PositionComponent(10, 30));
 	player->addComponent(new ControlComponent());
+	player->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("player.png"))));
 
 	alien->addComponent(new HealthComponent(150));
-	alien->addComponent(new PositionComponent(20, 30));
+	alien->addComponent(new PositionComponent(10, 180));
 	alien->addComponent(new AIComponent());
+	alien->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("alien.png"))));
 
 	dog->addComponent(new HealthComponent(100));
-	dog->addComponent(new PositionComponent(50, 80));
+	dog->addComponent(new PositionComponent(10, 320));
 	dog->addComponent(new AIComponent());
+	dog->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("dog.png"))));
 
 	cat->addComponent(new HealthComponent(75));
-	cat->addComponent(new PositionComponent(70, 30));
+	cat->addComponent(new PositionComponent(10, 470));
 	cat->addComponent(new AIComponent());
+	cat->addComponent(new RenderComponent(SDL_CreateTextureFromSurface(renderer, IMG_Load("cat.png"))));
 
 	HealthSystem healthSystem;
 	healthSystem.addEntity(player);
@@ -122,49 +90,35 @@ int main()
 
 	healthSystem.update();
 	controlSystem.update();
-	renderSystem.update();
 	aiSystem.update();
+	renderSystem.render(renderer);
 
-	while (true)
+	// Set background color
+	SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
+	SDL_RenderClear(renderer);
+
+	while (!quit)
 	{
-		//healthSystem.update();
-		//controlSystem.update();
-		//renderSystem.update();
-		//aiSystem.update();
-
-	}
-
-	if (!init())
-	{
-		printf("Failed to initialize!\n");
-	}
-	else
-	{
-		SDL_SetMainReady();
-
-		bool quit = false;
-
-		SDL_Event event;
-
-		while (!quit)
+		while (SDL_PollEvent(&event) != 0)
 		{
-			while (SDL_PollEvent(&event) != 0)
+			if (event.type == SDL_QUIT)
 			{
-				if (event.type == SDL_QUIT)
-				{
-					quit = true;
-				}
-				else if (event.type == SDL_KEYDOWN)
-				{
+				quit = true;
+			}
+			else if (event.type == SDL_KEYDOWN)
+			{
 
-				}
-				
-				//Apply the image
-				SDL_BlitSurface(gXOut, NULL, gScreenSurface, NULL);
-				//Update the surface
-				SDL_UpdateWindowSurface(gWindow);
 			}
 		}
+		healthSystem.update();
+		renderSystem.render(renderer);
 	}
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(image);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	IMG_Quit();
+	SDL_Quit();
+
 	return 0;
 }

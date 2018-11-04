@@ -11,7 +11,6 @@ public:
 	void addEntity(Entity* e) { entities.push_back(e); }
 	void update()
 	{
-		cout << "HealthSystem" << endl;
 		for (Entity* e : entities)
 		{
 			vector<Component*> components = e->getComponents();
@@ -20,11 +19,10 @@ public:
 				if (c->getType() == TYPE::HEALTH)
 				{
 					HealthComponent* healthComponent = static_cast<HealthComponent*>(c);
-					cout << "Entity: " << e->getName() << ", Health: " << healthComponent->getHealth() << endl;
+					//cout << "HealthSystem, Entity: " << e->getName() << ", Health: " << healthComponent->getHealth() << endl; cout << endl;
 				}
 			}
 		}
-		cout << endl;
 	}
 private:
 	vector<Entity*> entities;

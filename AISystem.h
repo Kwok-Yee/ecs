@@ -11,7 +11,6 @@ public:
 	void addEntity(Entity* e) { entities.push_back(e); }
 	void update()
 	{
-		cout << "AISystem" << endl;
 		for (Entity* e : entities)
 		{
 			vector<Component*> components = e->getComponents();
@@ -20,7 +19,7 @@ public:
 				if (c->getType() == TYPE::AI)
 				{
 					AIComponent* aiComponent = static_cast<AIComponent*>(c);
-					cout << "Entity: " << e->getName() << ", is AI: " << aiComponent->getIsAI() << endl;
+					cout << "AISystem, Entity: " << e->getName() << ", is AI: " << aiComponent->getIsAI() << endl;
 				}
 			}
 		}
